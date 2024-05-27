@@ -2,9 +2,7 @@
 
 namespace Omnipay\GlobalAlipay;
 
-use Omnipay\Common\AbstractGateway;
-
-class WapGateway extends AbstractGateway
+class WapGateway extends BaseGateway
 {
 
     /**
@@ -15,18 +13,6 @@ class WapGateway extends AbstractGateway
     public function getName()
     {
         return 'Global Alipay wap gateway';
-    }
-
-
-    public function getEnvironment()
-    {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
     }
 
 
@@ -42,42 +28,6 @@ class WapGateway extends AbstractGateway
     }
 
 
-    public function getPartner()
-    {
-        return $this->getParameter('partner');
-    }
-
-
-    public function setPartner($value)
-    {
-        return $this->setParameter('partner', $value);
-    }
-
-
-    public function getNotifyUrl()
-    {
-        return $this->getParameter('notify_url');
-    }
-
-
-    public function setNotifyUrl($value)
-    {
-        return $this->setParameter('notify_url', $value);
-    }
-
-
-    public function getReturnUrl()
-    {
-        return $this->getParameter('return_url');
-    }
-
-
-    public function setReturnUrl($value)
-    {
-        return $this->setParameter('return_url', $value);
-    }
-
-
     public function getSignType()
     {
         return $this->getParameter('sign_type');
@@ -90,46 +40,9 @@ class WapGateway extends AbstractGateway
     }
 
 
-    public function setPrivateKey($value)
-    {
-        return $this->setParameter('private_key', $value);
-    }
-
-
-    public function getPrivateKey()
-    {
-        return $this->getParameter('private_key');
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getAlipayPublicKey()
-    {
-        return $this->getParameter('alipay_public_key');
-    }
-
-
-    /**
-     * @param $value
-     *
-     * @return $this
-     */
-    public function setAlipayPublicKey($value)
-    {
-        return $this->setParameter('alipay_public_key', $value);
-    }
-
-
     public function purchase(array $parameters = [])
     {
         return $this->createRequest('\Omnipay\GlobalAlipay\Message\WapPurchaseRequest', $parameters);
     }
 
-
-    public function completePurchase(array $parameters = [])
-    {
-        return $this->createRequest('\Omnipay\GlobalAlipay\Message\CompletePurchaseRequest', $parameters);
-    }
 }

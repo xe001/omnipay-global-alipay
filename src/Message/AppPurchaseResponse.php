@@ -37,9 +37,7 @@ class AppPurchaseResponse extends AbstractResponse
         $str = http_build_query($data);
         $str = str_replace('&', '"&', $str);
         $str = str_replace('=', '="', $str) . '"';
-        $str = urldecode($str);
-
-        return $str;
+        return urldecode($str);
     }
 
 

@@ -2,17 +2,12 @@
 
 namespace Omnipay\GlobalAlipay\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GlobalAlipay\Common\Signer;
 
-class TradeQueryRequest extends AbstractRequest
+class TradeQueryRequest extends AbstractBaseRequest
 {
-    protected $endpoint = 'https://mapi.alipay.com/gateway.do';
-
-    protected $endpointSandbox = 'https://openapi.alipaydev.com/gateway.do';
-
     protected $service = 'single_trade_query';
 
     /**
@@ -24,20 +19,21 @@ class TradeQueryRequest extends AbstractRequest
     public function getData()
     {
         $this->validate(
-            'partner'
+            'partner',
+			'sign_type'
         );
 
         $data = [
             'out_trade_no' => $this->getOutTradeNo(),
             'service' => $this->service,
             '_input_charset' => $this->getInputCharset() ?: 'utf-8',
-            'sign_type' => 'RSA',
+            'sign_type' => $this->getSignType(),
             'partner' => $this->getPartner(),
         ];
 
         ksort($data);
 
-        $data['sign'] = $this->sign($data, 'RSA');
+        $data['sign'] = $this->sign($data, $this->getSignType());
 
         return $data;
     }
@@ -101,28 +97,14 @@ class TradeQueryRequest extends AbstractRequest
         return $url;
     }
 
-
-    /**
-     * @return mixed
-     */
-    public function getEndpoint()
+    public function getSignType()
     {
-        if ($this->getEnvironment() == 'sandbox') {
-            return $this->endpointSandbox;
-        } else {
-            return $this->endpoint;
-        }
+        return $this->getParameter('sign_type');
     }
 
-    public function getEnvironment()
+    public function setSignType($value)
     {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
+        return $this->setParameter('sign_type', $value);
     }
 
     public function getPrivateKey()
@@ -144,7 +126,7 @@ class TradeQueryRequest extends AbstractRequest
     {
         return $this->setParameter('key', $value);
     }
-  
+
     public function getPartner()
     {
         return $this->getParameter('partner');

@@ -1,12 +1,9 @@
 # Omnipay: Alipay (Global)
+由于原库不更新了，所以自己fork一个来维护
 
 **Alipay global driver for the Omnipay PHP payment processing library**
 
-[![Build Status](https://travis-ci.org/lokielse/omnipay-global-alipay.png?branch=master)](https://travis-ci.org/lokielse/omnipay-global-alipay)
-[![Latest Stable Version](https://poser.pugx.org/lokielse/omnipay-global-alipay/version.png)](https://packagist.org/packages/lokielse/omnipay-global-alipay)
-[![Total Downloads](https://poser.pugx.org/lokielse/omnipay-global-alipay/d/total.png)](https://packagist.org/packages/lokielse/omnipay-global-alipay)
-
-[Omnipay](https://github.com/omnipay/omnipay) is a framework agnostic, multi-gateway payment
+[Omnipay](https://github.com/omnipay/omnipay) is a framework independent multi-gateway payment
 processing library for PHP 5.3+. This package implements Alipay support for Omnipay.
 
 > This package only support global Alipay service
@@ -18,7 +15,7 @@ Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply
 ```json
 {
     "require": {
-        "lokielse/omnipay-global-alipay": "dev-master"
+        "xe001/omnipay-global-alipay": "dev-master"
     }
 }
 ```
@@ -112,23 +109,16 @@ if ($response->isPaid()) {
 For general usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
 repository.
 
-## Related
 
-- [Laravel-Omnipay](https://github.com/ignited/laravel-omnipay)
-- [Omnipay-Alipay](https://github.com/lokielse/omnipay-alipay)
-- [Omnipay-WechatPay](https://github.com/lokielse/omnipay-wechatpay)
-- [Omnipay-UnionPay](https://github.com/lokielse/omnipay-unionpay)
 
 ## Support
 
 If you are having general issues with Omnipay, we suggest posting on
 [Stack Overflow](http://stackoverflow.com/). Be sure to add the
-[omnipay tag](http://stackoverflow.com/questions/tagged/omnipay) so it can be easily found.
+[omnipay tag](http://stackoverflow.com/questions/tagged/omnipay), so it can be easily found.
 
-If you want to keep up to date with release anouncements, discuss ideas for the project,
+If you want to keep up to date with release announcements, discuss ideas for the project,
 or ask more detailed questions, there is also a [mailing list](https://groups.google.com/forum/#!forum/omnipay) which
 you can subscribe to.
 
-If you believe you have found a bug, please report it using the [GitHub issue tracker](https://github.com/lokielse/omnipay-global-alipay/issues),
-or better yet, fork the library and submit a pull request.
 

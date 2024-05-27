@@ -1,5 +1,5 @@
 {
-    "name": "lokielse/omnipay-global-alipay",
+    "name": "xe001/omnipay-global-alipay",
     "type": "library",
     "description": "Alipay global gateway for Omnipay payment processing library",
     "keywords": [

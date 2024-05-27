@@ -2,17 +2,12 @@
 
 namespace Omnipay\GlobalAlipay\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GlobalAlipay\Common\Signer;
 
-class TradeRefundRequest extends AbstractRequest
+class TradeRefundRequest extends AbstractBaseRequest
 {
-    protected $endpoint = 'https://mapi.alipay.com/gateway.do';
-
-    protected $endpointSandbox = 'https://openapi.alipaydev.com/gateway.do';
-
     protected $service = 'forex_refund';
 
     /**
@@ -121,30 +116,6 @@ class TradeRefundRequest extends AbstractRequest
         $url = sprintf('%s?%s', $this->getEndpoint(), http_build_query($queryParams));
 
         return $url;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getEndpoint()
-    {
-        if ($this->getEnvironment() == 'sandbox') {
-            return $this->endpointSandbox;
-        } else {
-            return $this->endpoint;
-        }
-    }
-
-    public function getEnvironment()
-    {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
     }
 
     public function getPrivateKey()

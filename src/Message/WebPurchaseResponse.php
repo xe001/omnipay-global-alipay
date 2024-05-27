@@ -5,19 +5,11 @@ namespace Omnipay\GlobalAlipay\Message;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
+/**
+ * @property WebPurchaseRequest $request
+ */
 class WebPurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
-    protected $endpoint = 'https://mapi.alipay.com/gateway.do';
-
-    protected $endpointSandbox = 'https://openapi.alipaydev.com/gateway.do';
-
-    /**
-     * The embodied request object.
-     *
-     * @var WebPurchaseRequest
-     */
-    protected $request;
-
 
     /**
      * Is the response successful?
@@ -41,7 +33,7 @@ class WebPurchaseResponse extends AbstractResponse implements RedirectResponseIn
      */
     public function getRedirectUrl()
     {
-        return sprintf('%s?%s', $this->getEndpoint(), http_build_query($this->getRedirectData()));
+        return $this->request->getRequestUrl();
     }
 
 
@@ -60,18 +52,5 @@ class WebPurchaseResponse extends AbstractResponse implements RedirectResponseIn
     public function getRedirectData()
     {
         return $this->request->getData();
-    }
-
-
-    /**
-     * @return string
-     */
-    protected function getEndpoint()
-    {
-        if ($this->request->getEnvironment() == 'sandbox') {
-            return $this->endpointSandbox;
-        } else {
-            return $this->endpoint;
-        }
     }
 }

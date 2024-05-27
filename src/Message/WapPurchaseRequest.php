@@ -7,7 +7,7 @@ use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GlobalAlipay\Helper;
 
-class WapPurchaseRequest extends AbstractRequest
+class WapPurchaseRequest extends AbstractBaseRequest
 {
 
     /**
@@ -66,7 +66,6 @@ class WapPurchaseRequest extends AbstractRequest
 
         return $data;
     }
-
 
     /**
      * Send the request with specified data
@@ -291,18 +290,6 @@ class WapPurchaseRequest extends AbstractRequest
     }
 
 
-    public function getEnvironment()
-    {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
-    }
-
-
     /**
      * @param $signType
      *
@@ -319,5 +306,10 @@ class WapPurchaseRequest extends AbstractRequest
 
             return $key;
         }
+    }
+
+    public function getRequestUrl()
+    {
+        return $this->getEndpoint().'?'.http_build_query($this->getData());
     }
 }

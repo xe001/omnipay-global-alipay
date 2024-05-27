@@ -3,32 +3,26 @@
 namespace Omnipay\GlobalAlipay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GlobalAlipay\Common\Signer;
-use Omnipay\GlobalAlipay\Helper;
 
-class CompletePurchaseRequest extends AbstractRequest
+class CompletePurchaseRequest extends AbstractBaseRequest
 {
-    protected $endpoint = 'http://notify.alipay.com/trade/notify_query.do?';
-
-    protected $endpointHttps = 'https://mapi.alipay.com/gateway.do?service=notify_verify&';
-
-    protected $endpointSandbox = 'https://openapi.alipaydev.com/gateway.do';
-
+    protected $notifyEndpoint = 'http://notify.alipay.com/trade/notify_query.do?';
 
     /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
+     * @throws InvalidRequestException
      */
     public function getData()
     {
         $this->validateParam('sign_type', 'sign', 'out_trade_no');
 
         $transport = strtolower($this->getTransport() ?: 'http');
-        $signType  = $this->getRequestParam('sign_type');
+        $signType = $this->getRequestParam('sign_type');
 
         if ($transport == 'https') {
             $this->validate('ca_cert_path');
@@ -40,11 +34,9 @@ class CompletePurchaseRequest extends AbstractRequest
             $this->validate('private_key');
         }
 
-        $data = array(
+        return array(
             'request_params' => $this->getRequestParams()
         );
-
-        return $data;
     }
 
 
@@ -104,18 +96,6 @@ class CompletePurchaseRequest extends AbstractRequest
     public function setPartner($value)
     {
         return $this->setParameter('partner', $value);
-    }
-
-
-    public function getEnvironment()
-    {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
     }
 
 
@@ -187,7 +167,7 @@ class CompletePurchaseRequest extends AbstractRequest
     /**
      * Send the request with specified data
      *
-     * @param  mixed $data The data to send
+     * @param mixed $data The data to send
      *
      * @return ResponseInterface
      */
@@ -197,7 +177,7 @@ class CompletePurchaseRequest extends AbstractRequest
 
         $signType = strtoupper($this->getRequestParam('sign_type'));
 
-        $sign =  $this->getRequestParam('sign');
+        $sign = $this->getRequestParam('sign');
 
         $notifyId = $this->getRequestParam('notify_id');
         $signer = new Signer($data);
@@ -214,7 +194,7 @@ class CompletePurchaseRequest extends AbstractRequest
          */
         if ($notifyId) {
             $verifyResponse = $this->getVerifyResponse($notifyId);
-            $verifyOk       = $this->isNotifyVerifiedOK($verifyResponse);
+            $verifyOk = $this->isNotifyVerifiedOK($verifyResponse);
         } else {
             $verifyOk = true;
         }
@@ -243,9 +223,9 @@ class CompletePurchaseRequest extends AbstractRequest
         }
 
         $responseData = array(
-            'sign_match'          => $signMatch,
+            'sign_match' => $signMatch,
             'notify_id_verify_ok' => $verifyOk,
-            'paid'                => $paid,
+            'paid' => $paid,
         );
 
         return $this->response = new CompletePurchaseResponse($this, $responseData);
@@ -264,14 +244,12 @@ class CompletePurchaseRequest extends AbstractRequest
 
     private function getVerifyResponse($notifyId)
     {
-        $partner  = $this->getPartner();
+        $partner = $this->getPartner();
         $endpoint = $this->getEndpoint();
 
         $url = "{$endpoint}partner={$partner}&notify_id={$notifyId}";
 
-        $response = $this->getHttpResponseGET($url, $this->getCacertPath());
-
-        return $response;
+        return $this->getHttpResponseGET($url, $this->getCacertPath());
     }
 
 
@@ -289,22 +267,13 @@ class CompletePurchaseRequest extends AbstractRequest
         return $responseText;
     }
 
-
-    private function getEndpoint()
+    protected function getEndpoint()
     {
         $transport = strtolower($this->getTransport() ?: 'http');
-
-        if ($this->getEnvironment() == 'sandbox') {
-            return $this->endpointSandbox . '?service=notify_verify&';
-        } else {
-            if (strtolower($transport) == 'http') {
-                return $this->endpoint;
-            } else {
-                return $this->endpointHttps;
-            }
-        }
+        $query_str = '?service=notify_verify&';
+        return $this->getTestMode() ?
+            $this->testEndpoint . $query_str : (strtolower($transport) == 'http' ? $this->notifyEndpoint : $this->proEndpoint . $query_str);
     }
-
 
     /**
      * @param $signType
@@ -313,11 +282,7 @@ class CompletePurchaseRequest extends AbstractRequest
      */
     protected function getSignKey($signType)
     {
-        if ($signType == 'MD5') {
-            return $this->getKey();
-        } else {
-            return $this->getPrivateKey();
-        }
+        return $signType == 'MD5' ? $this->getKey() : $this->getPrivateKey();
     }
 
     /**

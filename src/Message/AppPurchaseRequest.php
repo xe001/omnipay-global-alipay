@@ -3,12 +3,10 @@
 namespace Omnipay\GlobalAlipay\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 
-class AppPurchaseRequest extends AbstractRequest
+class AppPurchaseRequest extends AbstractBaseRequest
 {
-
     /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.

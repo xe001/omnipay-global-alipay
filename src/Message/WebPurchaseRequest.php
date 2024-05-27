@@ -6,9 +6,8 @@ use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GlobalAlipay\Common\Signer;
-use Omnipay\GlobalAlipay\Helper;
 
-class WebPurchaseRequest extends AbstractRequest
+class WebPurchaseRequest extends AbstractBaseRequest
 {
 
     /**
@@ -270,12 +269,10 @@ class WebPurchaseRequest extends AbstractRequest
         return $this->setParameter('order_valid_time', $value);
     }
 
-
     public function getTimeoutRule()
     {
         return $this->getParameter('timeout_rule');
     }
-
 
     /**
      * @param $value 5m 10m 15m 30m 1h 2h 3h 5h 10h 12h(default)
@@ -335,19 +332,6 @@ class WebPurchaseRequest extends AbstractRequest
         return $this->setParameter('seller_industry', $value);
     }
 
-
-    public function getEnvironment()
-    {
-        return $this->getParameter('environment');
-    }
-
-
-    public function setEnvironment($value)
-    {
-        return $this->setParameter('environment', $value);
-    }
-
-
     public function getSplitFundInfo()
     {
         return $this->getParameter('split_fund_info');
@@ -388,5 +372,10 @@ class WebPurchaseRequest extends AbstractRequest
         }
 
         return $sign;
+    }
+
+    public function getRequestUrl()
+    {
+        return $this->getEndpoint().'?'.http_build_query($this->getData());
     }
 }
