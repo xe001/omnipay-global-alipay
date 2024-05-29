@@ -260,7 +260,9 @@ class CompletePurchaseRequest extends AbstractBaseRequest
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($curl, CURLOPT_CAINFO, $caCertUrl);
+        if ($caCertUrl){
+            curl_setopt($curl, CURLOPT_CAINFO, $caCertUrl);
+        }
         $responseText = curl_exec($curl);
         curl_close($curl);
 
