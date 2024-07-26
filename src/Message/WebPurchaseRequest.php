@@ -55,7 +55,9 @@ class WebPurchaseRequest extends AbstractBaseRequest
             'seller_id'             => $this->getSellerId(),//<>
             'seller_name'           => $this->getSellerIndustry(),//<>
             'split_fund_info'       => $this->getSplitFundInfo(),
-            'product_code'          => $this->getProductCode() ?: 'NEW_OVERSEAS_SELLER',
+            'product_code'          => $this->getProductCode(),
+            'refer_url'             => $this->getReferUrl(),
+            'trade_information'     => $this->getTradeInformation()
         );
 
         $data = array_filter($data);
@@ -377,5 +379,21 @@ class WebPurchaseRequest extends AbstractBaseRequest
     public function getRequestUrl()
     {
         return $this->getEndpoint().'?'.http_build_query($this->getData());
+    }
+
+    public function getReferUrl(){
+        return $this->getParameter('refer_url');
+    }
+
+    public function setReferUrl($value){
+        return $this->setParameter('refer_url', $value);
+    }
+
+    public function getTradeInformation(){
+        return json_encode($this->getParameter('trade_information'));
+    }
+
+    public function setTradeInformation($value){
+        return $this->setParameter('trade_information', $value);
     }
 }
